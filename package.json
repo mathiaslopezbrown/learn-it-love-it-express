@@ -1,0 +1,16 @@
+{
+  "name": "learn-it-love-it-express",
+  "version": "1.0.0",
+  "description": "Learning topics and links CRUD with a voting system - Node.js, Express, EJS and SQLite (MVC)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "ejs": "^7.0.2",
+    "express": "^5.3.0"
+  }
+}
