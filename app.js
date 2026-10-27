@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const topicRoutes = require('./routes/topicRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,10 +16,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false })); // HTML forms
 app.use(express.json());                          // fetch() with JSON
 
-// Test route
-app.get('/', (req, res) => {
-  res.render('index', { title: 'Learn It, Love It' });
-});
+// Routes
+app.use('/', topicRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);

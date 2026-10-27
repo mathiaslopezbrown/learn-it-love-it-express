@@ -7,6 +7,34 @@
 </head>
 <body>
   <h1><%= title %></h1>
-  <p>Server running.</p>
+
+  <!-- Create: a plain HTML form (POST) -->
+  <form action="/topics" method="POST">
+    <input type="text" name="title" placeholder="New learning topic" maxlength="100" required>
+    <button type="submit">Add topic</button>
+  </form>
+
+  <% if (topics.length === 0) { %>
+    <p>No topics yet. Add the first one!</p>
+  <% } %>
+
+  <!-- Read: one <li> per topic; edit and delete are handled by public/js/main.js -->
+  <ul id="topic-list">
+    <% topics.forEach(topic => { %>
+      <li data-id="<%= topic.id %>">
+        <span class="topic-title" data-mode="view"><%= topic.title %></span>
+        <input class="edit-input" type="text" maxlength="100" data-mode="edit" hidden>
+
+        <span class="topic-votes"><%= topic.votes %> <%= topic.votes === 1 ? 'vote' : 'votes' %></span>
+
+        <button class="edit-btn" data-mode="view">Edit</button>
+        <button class="delete-btn" data-mode="view">Delete</button>
+        <button class="save-btn" data-mode="edit" hidden>Save</button>
+        <button class="cancel-btn" data-mode="edit" hidden>Cancel</button>
+      </li>
+    <% }) %>
+  </ul>
+
+  <script src="/js/main.js"></script>
 </body>
 </html>
