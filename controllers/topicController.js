@@ -1,9 +1,21 @@
 const Topic = require('../models/topicModel');
+const Link = require('../models/linkModel');
 
 // GET / -> page with all topics
 function index(req, res) {
   const topics = Topic.getAll();
-  res.render('index', { title: 'Learn It, Love It', topics });
+  res.render('index', { title: 'Topics', topics });
+}
+
+// GET /topics/:id -> page of one topic with its links
+function show(req, res) {
+  const topic = Topic.getById(Number(req.params.id));
+  if (!topic) {
+    return res.status(404).send('Topic not found');
+  }
+
+  const links = Link.getByTopic(topic.id);
+  res.render('topic', { title: topic.title, topic, links });
 }
 
 // POST /topics -> HTML form, then back to the list
@@ -40,4 +52,4 @@ function remove(req, res) {
   res.status(204).end();
 }
 
-module.exports = { index, create, update, remove };
+module.exports = { index, show, create, update, remove };

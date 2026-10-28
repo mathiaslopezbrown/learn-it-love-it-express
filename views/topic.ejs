@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head', { title }) %>
+<body>
+  <a href="/">&larr; Back to topics</a>
+
+  <h1><%= topic.title %></h1>
+  <p><%= topic.votes %> <%= topic.votes === 1 ? 'vote' : 'votes' %></p>
+
+  <!-- Create: a plain HTML form (POST) -->
+  <form action="/topics/<%= topic.id %>/links" method="POST">
+    <input type="text" name="title" placeholder="Link title" maxlength="100" required>
+    <input type="url" name="url" placeholder="https://..." required>
+    <button type="submit">Add link</button>
+  </form>
+
+  <% if (links.length === 0) { %>
+    <p>No links yet. Add the first one!</p>
+  <% } %>
+
+  <!-- Read: one <li> per link; edit and delete are handled by public/js/main.js -->
+  <ul id="link-list" data-endpoint="/links" data-confirm="Delete this link?">
+    <% links.forEach(link => { %>
+      <li data-id="<%= link.id %>">
+        <a href="<%= link.url %>" target="_blank" rel="noopener noreferrer" data-display="title" data-mode="view"><%= link.title %></a>
+        <small data-display="url" data-mode="view"><%= link.url %></small>
+        <input type="text" maxlength="100" data-field="title" data-mode="edit" hidden>
+        <input type="url" data-field="url" data-mode="edit" hidden>
+
+        <span class="votes"><%= link.votes %> <%= link.votes === 1 ? 'vote' : 'votes' %></span>
+
+        <button class="edit-btn" data-mode="view">Edit</button>
+        <button class="delete-btn" data-mode="view">Delete</button>
+        <button class="save-btn" data-mode="edit" hidden>Save</button>
+        <button class="cancel-btn" data-mode="edit" hidden>Cancel</button>
+      </li>
+    <% }) %>
+  </ul>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

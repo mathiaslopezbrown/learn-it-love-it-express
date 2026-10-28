@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const topicRoutes = require('./routes/topicRoutes');
+const linkRoutes = require('./routes/linkRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +19,7 @@ app.use(express.json());                          // fetch() with JSON
 
 // Routes
 app.use('/', topicRoutes);
+app.use('/', linkRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);
