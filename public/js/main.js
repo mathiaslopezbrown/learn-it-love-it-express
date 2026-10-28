@@ -1,5 +1,5 @@
 // Every list with a data-endpoint (topics on the home page, links on a topic page)
-// gets the same edit/delete behaviour. One listener per list (event delegation).
+// gets the same vote/edit/delete behaviour. One listener per list (event delegation).
 document.querySelectorAll('[data-endpoint]').forEach(list => {
   list.addEventListener('click', async (event) => {
     const button = event.target.closest('button');
@@ -8,12 +8,36 @@ document.querySelectorAll('[data-endpoint]').forEach(list => {
     const item = button.closest('li');
     const url = `${list.dataset.endpoint}/${item.dataset.id}`; // e.g. /topics/3 or /links/7
 
+    if (button.classList.contains('vote-btn')) await voteItem(item, url, list);
     if (button.classList.contains('edit-btn')) startEditing(item);
     if (button.classList.contains('cancel-btn')) setEditing(item, false);
     if (button.classList.contains('save-btn')) await saveItem(item, url);
     if (button.classList.contains('delete-btn')) await deleteItem(item, url, list.dataset.confirm);
   });
 });
+
+async function voteItem(item, url, list) {
+  const response = await fetch(`${url}/vote`, { method: 'POST' });
+
+  if (!response.ok) {
+    alert('Could not register the vote');
+    return;
+  }
+
+  const updated = await response.json();
+  item.dataset.votes = updated.votes;
+  item.querySelector('.votes').textContent = `${updated.votes} ${updated.votes === 1 ? 'vote' : 'votes'}`;
+  sortByVotes(list);
+}
+
+// Same order as the server: most votes first, ties by id (oldest first).
+// appendChild() on an element that is already in the list moves it to the end,
+// so appending them in sorted order rebuilds the list without reloading the page.
+function sortByVotes(list) {
+  const items = [...list.querySelectorAll('li')];
+  items.sort((a, b) => b.dataset.votes - a.dataset.votes || a.dataset.id - b.dataset.id);
+  items.forEach(item => list.appendChild(item));
+}
 
 // Shows the "edit" elements and hides the "view" ones (or the other way around)
 function setEditing(item, editing) {

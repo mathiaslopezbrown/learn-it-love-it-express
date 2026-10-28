@@ -14,14 +14,15 @@
     <p>No topics yet. Add the first one!</p>
   <% } %>
 
-  <!-- Read: one <li> per topic; edit and delete are handled by public/js/main.js -->
+  <!-- Read: one <li> per topic; voting, edit and delete are handled by public/js/main.js -->
   <ul id="topic-list" data-endpoint="/topics" data-confirm="Delete this topic and all its links?">
     <% topics.forEach(topic => { %>
-      <li data-id="<%= topic.id %>">
+      <li data-id="<%= topic.id %>" data-votes="<%= topic.votes %>">
         <a href="/topics/<%= topic.id %>" data-display="title" data-mode="view"><%= topic.title %></a>
         <input type="text" maxlength="100" data-field="title" data-mode="edit" hidden>
 
         <span class="votes"><%= topic.votes %> <%= topic.votes === 1 ? 'vote' : 'votes' %></span>
+        <button class="vote-btn">&#9650; Vote</button>
 
         <button class="edit-btn" data-mode="view">Edit</button>
         <button class="delete-btn" data-mode="view">Delete</button>
