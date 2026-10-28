@@ -7,6 +7,7 @@ router.get('/', topicController.index);
 router.get('/topics/:id', topicController.show);
 router.post('/topics', topicController.create);
 router.put('/topics/:id', topicController.update);
+router.post('/topics/:id/vote', topicController.vote);
 router.delete('/topics/:id', topicController.remove);
 
 module.exports = router;

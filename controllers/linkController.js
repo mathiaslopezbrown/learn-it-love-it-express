@@ -33,6 +33,16 @@ function update(req, res) {
   res.json(link);
 }
 
+// POST /links/:id/vote -> called with fetch(), answers with the updated link
+function vote(req, res) {
+  const link = Link.vote(Number(req.params.id));
+  if (!link) {
+    return res.status(404).json({ error: 'Link not found' });
+  }
+
+  res.json(link);
+}
+
 // DELETE /links/:id -> called with fetch(), answers 204 (no content)
 function remove(req, res) {
   const deleted = Link.remove(Number(req.params.id));
@@ -43,4 +53,4 @@ function remove(req, res) {
   res.status(204).end();
 }
 
-module.exports = { create, update, remove };
+module.exports = { create, update, vote, remove };

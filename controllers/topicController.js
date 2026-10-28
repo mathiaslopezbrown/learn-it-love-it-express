@@ -42,6 +42,16 @@ function update(req, res) {
   res.json(topic);
 }
 
+// POST /topics/:id/vote -> called with fetch(), answers with the updated topic
+function vote(req, res) {
+  const topic = Topic.vote(Number(req.params.id));
+  if (!topic) {
+    return res.status(404).json({ error: 'Topic not found' });
+  }
+
+  res.json(topic);
+}
+
 // DELETE /topics/:id -> called with fetch(), answers 204 (no content)
 function remove(req, res) {
   const deleted = Topic.remove(Number(req.params.id));
@@ -52,4 +62,4 @@ function remove(req, res) {
   res.status(204).end();
 }
 
-module.exports = { index, show, create, update, remove };
+module.exports = { index, show, create, update, vote, remove };
