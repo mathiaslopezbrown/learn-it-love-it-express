@@ -1,42 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('partials/head', { title }) %>
-<body>
-  <a href="/">&larr; Back to topics</a>
+<body class="bg-paper font-sans text-ink">
+  <main class="mx-auto max-w-2xl px-5 py-12">
+    <a href="/" class="text-sm text-muted hover:text-ink">&larr; All topics</a>
 
-  <h1><%= topic.title %></h1>
-  <p><%= topic.votes %> <%= topic.votes === 1 ? 'vote' : 'votes' %></p>
+    <h1 class="mt-4 font-display text-5xl font-extrabold"><%= topic.title %></h1>
+    <p class="mt-3 mb-10 text-muted">
+      <span class="rounded-sm bg-highlight px-1.5 font-bold text-ink"><%= topic.votes %></span>
+      <%= topic.votes === 1 ? 'vote' : 'votes' %>
+    </p>
 
-  <!-- Create: a plain HTML form (POST) -->
-  <form action="/topics/<%= topic.id %>/links" method="POST">
-    <input type="text" name="title" placeholder="Link title" maxlength="100" required>
-    <input type="url" name="url" placeholder="https://..." required>
-    <button type="submit">Add link</button>
-  </form>
+    <!-- Create: a plain HTML form (POST) -->
+    <form action="/topics/<%= topic.id %>/links" method="POST" class="mb-8 flex flex-col gap-2 sm:flex-row">
+      <input type="text" name="title" placeholder="Link title" maxlength="100" required
+             class="flex-1 rounded-md border border-rule bg-white px-3 py-2">
+      <input type="url" name="url" placeholder="https://..." required
+             class="flex-1 rounded-md border border-rule bg-white px-3 py-2">
+      <button type="submit" class="rounded-md bg-ink px-4 py-2 font-bold text-white">Add link</button>
+    </form>
 
-  <% if (links.length === 0) { %>
-    <p>No links yet. Add the first one!</p>
-  <% } %>
+    <% if (links.length === 0) { %>
+      <p class="text-muted">No links yet. Add a resource that helped you learn this.</p>
+    <% } %>
 
-  <!-- Read: one <li> per link; voting, edit and delete are handled by public/js/main.js -->
-  <ul id="link-list" data-endpoint="/links" data-confirm="Delete this link?">
-    <% links.forEach(link => { %>
-      <li data-id="<%= link.id %>" data-votes="<%= link.votes %>">
-        <a href="<%= link.url %>" target="_blank" rel="noopener noreferrer" data-display="title" data-mode="view"><%= link.title %></a>
-        <small data-display="url" data-mode="view"><%= link.url %></small>
-        <input type="text" maxlength="100" data-field="title" data-mode="edit" hidden>
-        <input type="url" data-field="url" data-mode="edit" hidden>
+    <!-- Read: one <li> per link; voting, edit and delete are handled by public/js/main.js -->
+    <ul id="link-list" data-endpoint="/links" data-confirm="Delete this link?"
+        class="divide-y divide-rule border-y border-rule">
+      <% links.forEach(link => { %>
+        <li data-id="<%= link.id %>" data-votes="<%= link.votes %>" class="flex items-center gap-4 py-4">
+          <!-- Votes -->
+          <div class="flex w-16 flex-col items-center gap-1">
+            <button class="vote-btn text-lg text-muted hover:text-ink">&#9650; Vote</button>
+            <span class="votes rounded-sm bg-highlight px-1.5 text-sm font-bold whitespace-nowrap"><%= link.votes %> <%= link.votes === 1 ? 'vote' : 'votes' %></span>
+          </div>
 
-        <span class="votes"><%= link.votes %> <%= link.votes === 1 ? 'vote' : 'votes' %></span>
-        <button class="vote-btn">&#9650; Vote</button>
+          <!-- Title and URL (view mode) and their inputs (edit mode) -->
+          <div class="flex min-w-0 flex-1 flex-col gap-1">
+            <a href="<%= link.url %>" target="_blank" rel="noopener noreferrer" data-display="title" data-mode="view"
+               class="font-semibold hover:underline"><%= link.title %></a>
+            <small data-display="url" data-mode="view" class="truncate text-sm text-muted"><%= link.url %></small>
+            <input type="text" maxlength="100" data-field="title" data-mode="edit" hidden
+                   class="w-full rounded-md border border-rule bg-white px-3 py-2">
+            <input type="url" data-field="url" data-mode="edit" hidden
+                   class="w-full rounded-md border border-rule bg-white px-3 py-2">
+          </div>
 
-        <button class="edit-btn" data-mode="view">Edit</button>
-        <button class="delete-btn" data-mode="view">Delete</button>
-        <button class="save-btn" data-mode="edit" hidden>Save</button>
-        <button class="cancel-btn" data-mode="edit" hidden>Cancel</button>
-      </li>
-    <% }) %>
-  </ul>
+          <!-- Actions -->
+          <div class="flex gap-1 text-sm">
+            <button class="edit-btn rounded px-2 py-1 text-muted hover:text-ink" data-mode="view">Edit</button>
+            <button class="delete-btn rounded px-2 py-1 text-muted hover:text-danger" data-mode="view">Delete</button>
+            <button class="save-btn rounded bg-ink px-3 py-1 font-bold text-white" data-mode="edit" hidden>Save</button>
+            <button class="cancel-btn rounded px-2 py-1 text-muted hover:text-ink" data-mode="edit" hidden>Cancel</button>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </main>
 
   <script src="/js/main.js"></script>
 </body>

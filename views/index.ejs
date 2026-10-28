@@ -1,36 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('partials/head', { title }) %>
-<body>
-  <h1>Learn It, Love It</h1>
+<body class="bg-paper font-sans text-ink">
+  <main class="mx-auto max-w-2xl px-5 py-12">
+    <h1 class="font-display text-5xl font-extrabold">Learn It, Love It</h1>
+    <p class="mt-3 mb-10 text-lg text-muted">Share what's worth learning. Vote for what helped you most.</p>
 
-  <!-- Create: a plain HTML form (POST) -->
-  <form action="/topics" method="POST">
-    <input type="text" name="title" placeholder="New learning topic" maxlength="100" required>
-    <button type="submit">Add topic</button>
-  </form>
+    <!-- Create: a plain HTML form (POST) -->
+    <form action="/topics" method="POST" class="mb-8 flex gap-2">
+      <input type="text" name="title" placeholder="New learning topic" maxlength="100" required
+             class="flex-1 rounded-md border border-rule bg-white px-3 py-2">
+      <button type="submit" class="rounded-md bg-ink px-4 py-2 font-bold text-white">Add topic</button>
+    </form>
 
-  <% if (topics.length === 0) { %>
-    <p>No topics yet. Add the first one!</p>
-  <% } %>
+    <% if (topics.length === 0) { %>
+      <p class="text-muted">No topics yet. Add the first one above.</p>
+    <% } %>
 
-  <!-- Read: one <li> per topic; voting, edit and delete are handled by public/js/main.js -->
-  <ul id="topic-list" data-endpoint="/topics" data-confirm="Delete this topic and all its links?">
-    <% topics.forEach(topic => { %>
-      <li data-id="<%= topic.id %>" data-votes="<%= topic.votes %>">
-        <a href="/topics/<%= topic.id %>" data-display="title" data-mode="view"><%= topic.title %></a>
-        <input type="text" maxlength="100" data-field="title" data-mode="edit" hidden>
+    <!-- Read: one <li> per topic; voting, edit and delete are handled by public/js/main.js -->
+    <ul id="topic-list" data-endpoint="/topics" data-confirm="Delete this topic and all its links?"
+        class="divide-y divide-rule border-y border-rule">
+      <% topics.forEach(topic => { %>
+        <li data-id="<%= topic.id %>" data-votes="<%= topic.votes %>" class="flex items-center gap-4 py-4">
+          <!-- Votes -->
+          <div class="flex w-16 flex-col items-center gap-1">
+            <button class="vote-btn text-lg text-muted hover:text-ink">&#9650; Vote</button>
+            <span class="votes rounded-sm bg-highlight px-1.5 text-sm font-bold whitespace-nowrap"><%= topic.votes %> <%= topic.votes === 1 ? 'vote' : 'votes' %></span>
+          </div>
 
-        <span class="votes"><%= topic.votes %> <%= topic.votes === 1 ? 'vote' : 'votes' %></span>
-        <button class="vote-btn">&#9650; Vote</button>
+          <!-- Title (view mode) and its input (edit mode) -->
+          <div class="flex-1">
+            <a href="/topics/<%= topic.id %>" data-display="title" data-mode="view"
+               class="font-display text-xl font-semibold hover:underline"><%= topic.title %></a>
+            <input type="text" maxlength="100" data-field="title" data-mode="edit" hidden
+                   class="w-full rounded-md border border-rule bg-white px-3 py-2">
+          </div>
 
-        <button class="edit-btn" data-mode="view">Edit</button>
-        <button class="delete-btn" data-mode="view">Delete</button>
-        <button class="save-btn" data-mode="edit" hidden>Save</button>
-        <button class="cancel-btn" data-mode="edit" hidden>Cancel</button>
-      </li>
-    <% }) %>
-  </ul>
+          <!-- Actions -->
+          <div class="flex gap-1 text-sm">
+            <button class="edit-btn rounded px-2 py-1 text-muted hover:text-ink" data-mode="view">Edit</button>
+            <button class="delete-btn rounded px-2 py-1 text-muted hover:text-danger" data-mode="view">Delete</button>
+            <button class="save-btn rounded bg-ink px-3 py-1 font-bold text-white" data-mode="edit" hidden>Save</button>
+            <button class="cancel-btn rounded px-2 py-1 text-muted hover:text-ink" data-mode="edit" hidden>Cancel</button>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </main>
 
   <script src="/js/main.js"></script>
 </body>

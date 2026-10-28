@@ -2,4 +2,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %> | Learn It, Love It</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap">
+
+  <!-- Tailwind CSS (browser build): reads the classes used in the page and generates the styles -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3"></script>
+
+  <!-- Design tokens: usable as bg-paper, text-ink, font-display, etc. -->
+  <style type="text/tailwindcss">
+    @theme {
+      --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+      --font-sans: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif;
+
+      --color-paper: #fbfbf8;
+      --color-ink: #1f2a44;
+      --color-muted: #5b6478;
+      --color-rule: #dce3ec;
+      --color-highlight: #ffe45c;
+      --color-danger: #b42318;
+    }
+
+    /* Visible keyboard focus on every button, link and input */
+    :focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 2px;
+    }
+  </style>
 </head>
