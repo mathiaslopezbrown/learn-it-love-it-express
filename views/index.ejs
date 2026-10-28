@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-</head>
+<%- include('partials/head', { title }) %>
 <body>
-  <h1><%= title %></h1>
+  <h1>Learn It, Love It</h1>
 
   <!-- Create: a plain HTML form (POST) -->
   <form action="/topics" method="POST">
@@ -19,13 +15,13 @@
   <% } %>
 
   <!-- Read: one <li> per topic; edit and delete are handled by public/js/main.js -->
-  <ul id="topic-list">
+  <ul id="topic-list" data-endpoint="/topics" data-confirm="Delete this topic and all its links?">
     <% topics.forEach(topic => { %>
       <li data-id="<%= topic.id %>">
-        <span class="topic-title" data-mode="view"><%= topic.title %></span>
-        <input class="edit-input" type="text" maxlength="100" data-mode="edit" hidden>
+        <a href="/topics/<%= topic.id %>" data-display="title" data-mode="view"><%= topic.title %></a>
+        <input type="text" maxlength="100" data-field="title" data-mode="edit" hidden>
 
-        <span class="topic-votes"><%= topic.votes %> <%= topic.votes === 1 ? 'vote' : 'votes' %></span>
+        <span class="votes"><%= topic.votes %> <%= topic.votes === 1 ? 'vote' : 'votes' %></span>
 
         <button class="edit-btn" data-mode="view">Edit</button>
         <button class="delete-btn" data-mode="view">Delete</button>
